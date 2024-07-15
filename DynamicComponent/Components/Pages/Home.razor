@@ -1,0 +1,35 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<h3>Select Component:</h3>
+<select @onchange="ChangeComponent">
+    <option value="">--Select--</option>
+    <option value="Counter">Counter</option>
+    <option value="Weather">Weather</option>
+</select>
+
+<br />
+@if (selectedComponentType != null)
+{
+    <DynamicComponent Type="selectedComponentType" />
+}
+
+@code {
+    private Type? selectedComponentType;
+
+    private void ChangeComponent(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+        {
+            var componentName = e.Value.ToString();
+            selectedComponentType = componentName switch
+            {
+                "Counter" => typeof(Counter),
+                "Weather" => typeof(Weather),
+                _ => typeof(Counter)
+            };
+        }
+    }
+}
+
+
